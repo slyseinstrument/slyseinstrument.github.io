@@ -1,0 +1,41 @@
+/* Two-column layout */
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/* Left column styles */
+.left-column {
+    flex: 1;
+    padding: 10px;
+}
+
+/* Right column styles */
+.right-column {
+    flex: 1;
+    padding: 10px;
+}
+
+.add-website-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.preview-download,
+.add-title,
+.add-website{
+    display: flex;
+    justify-content: flex-end;
+    justify-content: space-between;
+}
+
+.websites-item {
+    display: flex !important;
+    justify-content: space-between;
+}
+
+h6{
+    text-align: center;
+}
+

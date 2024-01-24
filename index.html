@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Generate PDF</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    
+</head>
+<body>
+    <div class="container">
+        <div class="left-column">
+            <div class="preview-download">
+                <button id="previewButton" class="btn btn-primary">Preview</button>
+                <button id="downloadButton" class="btn btn-primary">Download</button>
+            </div>
+            <hr>
+            <label for='titleInput'>Title</label>
+            <div class="add-title">
+                <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="titleInput" placeholder="Enter website url" class="form-control" aria-describedby="inputGroup-sizing-default">
+                <button id="addTitleButton" class="btn btn-light">Add</button>    
+            </div>
+            
+            <hr>
+            <div class="add-website-container">
+                <label for="websiteInput">Client website(s)</label>
+                <div class="add-website">
+                    <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="websiteInput" placeholder="Enter website url" class="form-control" aria-describedby="inputGroup-sizing-default">
+                    <button id="addWebsiteButton" class="btn btn-light">Add</button>
+                </div>
+            </div>
+            
+            <br>
+            <ol id="websiteList" class="list-group list-group-numbered"></ol>
+            
+                
+            <hr>
+            <div class="mt-4">
+                <ul class="nav nav-tabs" id="myTabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#maintenanceFeesTab">Maintenance Fees</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#transactionFeesTab">Transaction Fees</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#commissionFeesTab">Commission Fees</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#otherTab">Other</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content mt-2">
+                    <div id="maintenanceFeesTab" class="tab-pane fade show active">
+                        <!-- Your Maintenance Fees content goes here -->
+                        <form id="maintenanceFeesForm">
+                            <label for="InitialFee">Initial fee for consideration of the application for service and the accompanying documents of the Merchant</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="InitialFee" placeholder="-" class="form-control" aria-describedby="inputGroup-sizing-default">
+                            <br>
+                            <label for="MonthlyMaintenance">Monthly fee for the maintenance of the system accepting the Cards</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="MonthlyMaintenance" placeholder="-" class="form-control" aria-describedby="inputGroup-sizing-default">
+                            <br>
+                            <label for="MIDRegistration">MID Registration (each)</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="MIDRegistration" placeholder="-" class="form-control" aria-describedby="inputGroup-sizing-default">
+                            <br>
+                            <label for="AnnualMaintenance">Annual Payment Gateway maintenance fee</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="AnnualMaintenance" placeholder="-" class="form-control" aria-describedby="inputGroup-sizing-default">
+                            <br>
+                            <input type="submit" value="Add" class="btn btn-light">
+                        </form>
+                    </div>
+
+                    <div id="transactionFeesTab" class="tab-pane fade">
+                        <div class="step">
+                            <label for="paymentMethod">Select Payment Method:</label>
+                            <select id="paymentMethod" class="form-select" aria-label="Default select example">
+                                <option value="" selected disabled>Method</option>
+                                <option value="VISA">VISA</option>
+                                <option value="MasterCard">MasterCard</option>
+                                <option value="Open banking">Open banking</option>
+                            </select>
+                        </div>
+
+                        <!-- Rest of the content for Transaction Fees tab -->
+                        <div class="step" id="currencyStep" style="display: none;">
+                            <label for="currency">Select Currency:</label>
+                            <select id="currency" class="form-select" aria-label="Default select example">
+                                <option value="" selected disabled>Currency</option>
+                                <option value="United States Dollar (USD)">United States Dollar (USD)</option>
+                                <option value="Euro (EUR)">Euro (EUR)</option>
+                                <option value="Australian Dollar (AUD)">Australian Dollar (AUD)</option>
+                                <option value="Azerbaijani Manat (AZN)">Azerbaijani Manat ( AZN)</option>
+                                <option value="Brazilian Real (BRL)">Brazilian Real (BRL)</option>
+                                <option value="British Pound Sterling (GBP)">British Pound Sterling (GBP)</option>
+                                <option value="Canadian Dollar (CAD)">Canadian Dollar (CAD)</option>
+                                <option value="Chinese Yuan (CNY)">Chinese Yuan (CNY)</option>
+                                <option value="Hong Kong Dollar (HKD)">Hong Kong Dollar (HKD)</option>
+                                <option value="Indian Rupee (INR)">Indian Rupee (INR)</option>
+                                <option value="Japanese Yen (JPY)">Japanese Yen (JPY)</option>
+                                <option value="Kazakhstani Tenge ( KZT)">Kazakhstani Tenge (KZT)</option>
+                                <option value="Mexican Peso (MXN)">Mexican Peso (MXN)</option>
+                                <option value="New Zealand Dollar (NZD)">New Zealand Dollar (NZD)</option>
+                                <option value="Norwegian Krone (NOK)">Norwegian Krone (NOK)</option>
+                                <option value="Russian Ruble (RUB)">Russian Ruble (RUB)</option>
+                                <option value="Singapore Dollar (SGD)">Singapore Dollar (SGD)</option>
+                                <option value="South African Rand (ZAR)">South African Rand (ZAR)</option>
+                                <option value="South Korean Won (KRW)">South Korean Won (KRW)</option>
+                                <option value="Swiss Franc (CHF)">Swiss Franc (CHF)</option>
+                                <option value="Swedish Krona (SEK)">Swedish Krona (SEK)</option>
+                                <option value="Turkish Lira (TRY)">Turkish Lira (TRY)</option>
+                                <option value="Uzbekistan Som ( UZS)">Uzbekistan Som ( UZS)</option>
+                            </select>
+                        </div>
+
+                        <div class="step" id="inputStep" style="display: none;">
+                            <h4>Payment Configuration for <span id="selectedPaymentMethod"></span></h4>
+                            <div>
+                                <h4>WL</h4>
+                                <label for="wlRate">Rate (%):</label>
+                                <input class="form-control" aria-describedby="inputGroup-sizing-default" type="number" id="wlRate">
+                                <label for="wlFee">Fee:</label>
+                                <input class="form-control" aria-describedby="inputGroup-sizing-default" type="number" id="wlFee">
+                            </div>
+                            <div>
+                                <h4>FTD</h4>
+                                <label for="ftdRate">Rate (%):</label>
+                                <input class="form-control" aria-describedby="inputGroup-sizing-default" type="number" id="ftdRate">
+                                <label for="ftdFee">Fee:</label>
+                                <input class="form-control" aria-describedby="inputGroup-sizing-default" type="number" id="ftdFee">
+                            </div>
+                            <button id="saveButton" class="btn btn-light">Save</button>
+                        </div>
+                    </div>
+
+                    <div id="commissionFeesTab" class="tab-pane fade">
+                        <!-- Your Commission Fees content goes here -->
+                        <form id="otherCommissionForm">
+                            <!-- Commission Fees form content -->
+                            <label for="octBalanceTopUp">Commission fee for OCT balance top-up (%):</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="number" id="octBalanceTopUp" step="0.01" placeholder="-">
+                            <br>
+
+                            <label for="declinedTransaction">Commission fee for declined transaction:</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="declinedTransaction" placeholder="-">
+                            <br>
+
+                            <label for="refund">Commission fee for each refund (EUR):</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="number" id="refund" placeholder="-">
+                            <br>
+
+                            <label for="retrievalRequest">Commission fee per Retrieval Request (EUR):</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="number" id="retrievalRequest" placeholder="-">
+                            <br>
+
+                            <label for="chargeback">Commission fee for processing of each Chargeback (EUR):</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="number" id="chargeback" placeholder="-">
+                            <br>
+
+                            <label for="preArbitration">Commission fee per Pre-Arbitration (Scheme fees):</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="preArbitration" placeholder="-">
+                            <br>
+
+                            <label for="sepaSettlement">Commission fee for SEPA Settlement to the Merchant’s account (%):</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="number" id="sepaSettlement" step="0.01" placeholder="-">
+                            <br>
+
+                            <label for="swiftSettlement">Commission fee for SWIFT Settlement to the Merchant’s account:</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="swiftSettlement" placeholder="-">
+                            <br>
+
+                            <label for="usdtSettlement">Commission fee for USDT Settlement to the Merchant’s account (%):</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="number" id="usdtSettlement" step="0.01" placeholder="-">
+                            <br>
+
+                            <label for="outOfNormalOrderSettlement">Commission fee for Settlement out of normal order (%):</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="number" id="outOfNormalOrderSettlement" step="0.01" placeholder="-">
+                            <br>
+
+                            <label for="monthlyFee">Monthly fee (EUR):</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="number" id="monthlyFee" placeholder="-">
+                            <br>
+
+                            <input type="submit" value="Add" class="btn btn-light">
+                        </form>
+                    </div>
+
+                    <div id="otherTab" class="tab-pane fade">
+                        <!-- Your Other content goes here -->
+                        <form id="partiesForm">
+                            <label for="ourCompany">Provider company</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="ourCompany" placeholder="-">
+                            <br>
+                            <label for="ourDirector">Provider company director</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="ourDirector" placeholder="name">
+                            <br>
+                            <label for="MerchantCompany">Merchant company</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="MerchantCompany" placeholder="-">
+                            <br>
+                            <label for="MerchantRepresenter">Merchant company representer</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="MerchantRepresenter" placeholder="role"><br>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="MerchantRepresenterName" placeholder="name">
+                            <br>
+                            <input type="submit" value="Add" class="btn btn-light">
+                        </form>
+                        <hr>
+                        <form id="notFeesRelatedForm">
+                            <label for="ReportingPeriod">Reporting Period</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="ReportingPeriod" placeholder="Every - days">
+                            <br>
+
+                            <label for="SettlementFrequency">Frequency with which the Service Provider will transfer the Settlement to the Merchant Account of the Merchant</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="SettlementFrequency" placeholder="Every - days">
+                            <br>
+
+                            <label for="MinimumThreshold">Minimum monthly processing volume threshold</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="MinimumThreshold" placeholder="- EUR">
+                            <br>
+
+                            <label for="MinimumSettlementAmount">Minimum Settlement Amount</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="MinimumSettlementAmount" placeholder="- EUR">
+                            <br>
+                            <h6>Single transaction limit per Cardholder</h6>
+                            <label for="SingleTransactionLimit">Card Transaction</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="SingleTransactionLimit" placeholder="- EUR">
+                            <label for="SingleOctLimit">OCT</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="SingleOctLimit" placeholder="- EUR">
+                            <br>
+                            <h6>Daily transaction limit per Cardholder</h6>
+                            <label for="DailyTransactionLimit">Card Transaction</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="DailyTransactionLimit" placeholder="- EUR">
+                            <label for="DailyOctLimit">OCT</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="DailyOctLimit" placeholder="- EUR">
+                            <br>
+                            <h6>Monthly transaction limit per Cardholder</h6>
+                            <label for="MonthlyTransactionLimit">Card Transaction</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="MonthlyTransactionLimit" placeholder="- EUR">
+                            <label for="MonthlyOctLimit">OCT</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="MonthlyOctLimit" placeholder="- EUR">
+                            <br>
+                            <label for="SettlementCurrency">Currency for Settlement</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="SettlementCurrency" placeholder="- EUR">
+                            <br>
+                            <label for="AmountRollingReserve">Amount of the Rolling Reserve and period of possession</label>
+                            <input class="form-control" aria-describedby="inputGroup-sizing-default" type="text" id="AmountRollingReserve" placeholder="- EUR">
+                            <br>
+
+                            <input type="submit" value="Add" class="btn btn-light">
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Right column (unchanged) -->
+        <div class="right-column">
+            <iframe id="pdfFrame" style="width:100%; height:700px;"></iframe>
+        </div>
+    </div>
+
+    <script src="js/index.js"></script>
+    <script src="js/createpdf.js"></script>
+    <script type="text/javascript">
+        document.getElementById('addWebsiteButton').addEventListener('click', addWebsite);
+        document.getElementById('previewButton').addEventListener('click', previewPDF);
+        document.getElementById('downloadButton').addEventListener('click', downloadPDF);
+    </script>
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html
