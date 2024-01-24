@@ -10,14 +10,14 @@ function downloadPDF(){
     doc.save('pdf.pdf')
 }
 
+        // 'ADDENDUM FOR MERCHANT AGREEMENT ANNEX FEES 20231107/2',
 function createPDF(){
     let positionY = 30;
     const doc = new jsPDF({format: 'a4'});
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(11);
     doc.text(
-        // 'ADDENDUM FOR MERCHANT AGREEMENT ANNEX FEES 20231107/2',
-        localStorage.getItem('title'),
+        (localStorage.getItem('title') || "Title"),
         105, // This should be approximately the middle of an A4 page (210mm / 2)
         positionY,
         {
