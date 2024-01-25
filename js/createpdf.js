@@ -46,13 +46,18 @@ function createPDF(){
                 doc.rect(data.cell.x, data.cell.y, data.cell.width, data.cell.height);
             }
         },
-        margin: { left: 25}
+        margin: { left: 25},
+        styles: {
+            rowHeight: 7, // Set the height of the rows
+        },
     });
+    // var tableEndY = doc.lastAutoTable.finalY;
+
     text = `        2. FEES PAID TO THE SERVICE PROVIDER BY THE MERCHANT UNLESS OTHERWISE
 SPECIFIED. ALL FEES AND CHARGES SET OUT BELOW BECOME DUE AND PAYABLE
 BY THE MERCHANT AT THE TIME THE RELATED SERVICES ARE RENDERED OR
 TRANSACTION PROCESSED BY THE SERVICE PROVIDER.`;
-    positionY += 10 + (8 * websites_body.length)
+    positionY = 10 + doc.lastAutoTable.finalY;;
     
     doc.text(
         text,
@@ -69,13 +74,13 @@ SHALL BE PERFORMED BASING ON THE CONVERSION RESULT.`;
         positionY
     )
     positionY += 20;
-    // params
     let maintenance_body = [
         [2.1, 'Initial fee for consideration of the application for service and the accompanying documents of the Merchant', maintenanceFees.InitialFee],
         [2.2, 'Monthly fee for the maintenance of the system accepting the Cards', maintenanceFees.MonthlyMaintenance],
         [2.3, 'MID Registration (each)', maintenanceFees.MIDRegistration],
         [2.4, 'Annual Payment Gateway maintenance fee', maintenanceFees.AnnualMaintenance]
     ]
+    // maintenance
     doc.autoTable({
         startY: positionY,
         head: [['', 'Name of the Parameter', 'Value of the Parameter']],
@@ -96,7 +101,8 @@ SHALL BE PERFORMED BASING ON THE CONVERSION RESULT.`;
         },
         margin: { left: 25}
     });
-    positionY += 50;
+    // transaction fees
+    positionY = 10 + doc.lastAutoTable.finalY;
     bulleting = 1
     let commissions_body = [
         [3., 'Commissions: ', '', '']
@@ -156,7 +162,7 @@ SHALL BE PERFORMED BASING ON THE CONVERSION RESULT.`;
     other_fees_body[9].push(...['Commission fee for the Settlement to the Merchant’s account, if the Settlement is done out of normal order',commissionFees.outOfNormalOrderSettlement]);
     other_fees_body[10].push(...['Monthly fee, it the monthly processing volume does not exceed the minimum threshold as specified in clause 3.3 of this Annex',commissionFees.monthlyFee]);
 
-    positionY += 20 + (8 * commissions_body.length); 
+    positionY = 20 + doc.lastAutoTable.finalY;
 
     doc.autoTable({
         startY: positionY,
@@ -179,7 +185,7 @@ SHALL BE PERFORMED BASING ON THE CONVERSION RESULT.`;
         },
         margin: { left: 25}
     });
-    positionY -= 160;
+    positionY = 10 + doc.lastAutoTable.finalY;
     doc.setFont('times', 'normal');
     doc.setFontSize(10);
     text = `N.B. Gateway ID number may change due to the technical reasons unilaterally at the discretion of the Service Provider.`
@@ -282,7 +288,22 @@ SHALL BE PERFORMED BASING ON THE CONVERSION RESULT.`;
         },
         margin: { left: 25}
     });
-    positionY += 90;
+    // signatures
+    tableEndY = doc.lastAutoTable.finalY;
+
+    // Get the height of the page
+    var pageHeight = doc.internal.pageSize.height;
+
+    // Calculate the distance between the table end and the bottom of the page
+    var remainingSpace = pageHeight - tableEndY;
+    
+    if(remainingSpace < 100){
+        doc.addPage();
+        tableEndY = 0;
+    }
+
+    console.log(remainingSpace)
+    positionY = 20 + tableEndY;
     doc.text(
         '4. Details and Signatures of the Parties:',
         105, // This should be approximately the middle of an A4 page (210mm / 2)
@@ -291,8 +312,8 @@ SHALL BE PERFORMED BASING ON THE CONVERSION RESULT.`;
         align: 'center',
         }
     );
-
-    positionY += 10;
+    
+    positionY = 30 + tableEndY;
     doc.autoTable({
         startY: positionY,
         head: [[parties.ourCompany, parties.MerchantCompany]],
@@ -312,7 +333,8 @@ SHALL BE PERFORMED BASING ON THE CONVERSION RESULT.`;
             0: { cellWidth: 70, minCellHeight: 20, valign: 'center'},
             1: { cellWidth: 70, minCellHeight: 20, valign: 'center'}
         },
-        margin: { left: 40}
+        margin: { left: 40},
+        rowPageBreak: 'avoid',
     });
 
     return doc
