@@ -301,8 +301,6 @@ SHALL BE PERFORMED BASING ON THE CONVERSION RESULT.`;
         doc.addPage();
         tableEndY = 0;
     }
-
-    console.log(remainingSpace)
     positionY = 20 + tableEndY;
     doc.text(
         '4. Details and Signatures of the Parties:',
